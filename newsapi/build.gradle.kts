@@ -18,5 +18,5 @@ dependencies{
     implementation(libs.converter.gson)
     implementation(libs.coroutines)
     implementation(libs.kotlinx.serialization.json)
-
+    implementation(libs.retrofit.adapters)
 }
