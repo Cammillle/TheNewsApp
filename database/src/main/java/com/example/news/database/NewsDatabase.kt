@@ -16,6 +16,7 @@ abstract class NewsDatabase : RoomDatabase() {
 fun newsDatabase(applicationContext: Context): NewsDatabase {
     return Room.databaseBuilder(
         checkNotNull(applicationContext.applicationContext),
-        NewsDatabase::class.java, "database-name"
+        NewsDatabase::class.java,
+        "news"
     ).build()
 }

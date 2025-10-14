@@ -18,7 +18,6 @@ interface NewsApi {
 
     @GET("/everything")
     suspend fun getEverything(
-        @Query("apiKey") apiKey: String,
         @Query("q") query: String? = null,
         @Query("from") from: Date? = null,
         @Query("to") to: Date? = null,

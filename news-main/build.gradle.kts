@@ -51,4 +51,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     implementation(libs.coroutines)
+
+    implementation(project(":news-data"))
 }
