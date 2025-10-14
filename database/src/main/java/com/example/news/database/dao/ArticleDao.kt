@@ -15,7 +15,7 @@ interface ArticleDao {
     fun getAll(): Flow<List<ArticleDBO>>
 
     @Insert
-    suspend fun insert(article: ArticleDBO)
+    suspend fun insert(articles: List<ArticleDBO>)
 
     @Delete
     suspend fun remove(article: ArticleDBO)
