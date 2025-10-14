@@ -4,12 +4,15 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.news.database.utils.Converters
 import java.util.Date
 
-@Entity
+@Entity(tableName = "articles")
+@TypeConverters(Converters::class)
 data class ArticleDBO(
     @PrimaryKey(autoGenerate = true) val id: Long,
-    @ColumnInfo("source") @Embedded val source: Source,
+    @Embedded(prefix = "source.") val source: Source,
     @ColumnInfo("author") val author: String,
     @ColumnInfo("title") val title: String,
     @ColumnInfo("description") val description: String,
