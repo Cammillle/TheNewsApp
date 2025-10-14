@@ -1,9 +1,9 @@
 package com.example.newsapi
 
-import com.example.newsapi.models.Article
-import com.example.newsapi.models.Language
-import com.example.newsapi.models.Response
-import com.example.newsapi.models.SortBy
+import com.example.newsapi.models.ArticleDTO
+import com.example.newsapi.models.LanguageDTO
+import com.example.newsapi.models.ResponseDTO
+import com.example.newsapi.models.SortByDTO
 import com.example.newsapi.utils.NewsApiKeyInterceptor
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import okhttp3.OkHttpClient
@@ -22,11 +22,11 @@ interface NewsApi {
         @Query("q") query: String? = null,
         @Query("from") from: Date? = null,
         @Query("to") to: Date? = null,
-        @Query("language") languages: List<Language>? = null,
-        @Query("sortBy") sortBy: SortBy? = null,
+        @Query("language") languages: List<LanguageDTO>? = null,
+        @Query("sortBy") sortBy: SortByDTO? = null,
         @Query("pageSize") pageSize: Int = 100,
         @Query("page") page: Int = 1
-    ): Result<Response<Article>>
+    ): Result<ResponseDTO<ArticleDTO>>
 }
 
 fun newsApi(

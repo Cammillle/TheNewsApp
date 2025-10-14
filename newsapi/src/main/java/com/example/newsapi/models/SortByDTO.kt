@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class SortBy {
+enum class SortByDTO {
     @SerializedName("relevancy")
     RELEVANCY,
 

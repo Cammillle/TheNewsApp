@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 import java.util.Date
 
 @Serializable
-data class Article(
-    @SerializedName("source") val source: Source,
+data class ArticleDTO(
+    @SerializedName("source") val source: SourceDTO,
     @SerializedName("author") val author: String,
     @SerializedName("title") val title: String,
     @SerializedName("description") val description: String,
