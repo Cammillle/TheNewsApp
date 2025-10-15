@@ -25,19 +25,9 @@ class ArticlesRepository(
     fun getAll(
         mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResponseMergeStrategy()
     ): Flow<RequestResult<List<Article>>> {
-        val cachedArticles = getAllFromDatabase()
-            .map { result ->
-                result.map { dbos ->
-                    dbos.map { it.toArticle() }
-                }
-            }
 
+        val cachedArticles = getAllFromDatabase()
         val remoteArticles = getAllFromServer()
-            .map { result ->
-                result.map { response ->
-                    response.articles.map { it.toArticle() }
-                }
-            }
 
         return cachedArticles
             .combine(remoteArticles) { dbos: RequestResult<List<Article>>, dtos: RequestResult<List<Article>> ->
@@ -45,10 +35,11 @@ class ArticlesRepository(
             }
     }
 
-    private fun getAllFromServer(): Flow<RequestResult<ResponseDTO<ArticleDTO>>> {
+    private fun getAllFromServer(): Flow<RequestResult<List<Article>>> {
         val apiRequest = flow {
             emit(api.getEverything()) //Result<ResponseDTO<ArticleDTO>>
         }.onEach { result ->
+            // Если запрос прошел успешно, сохраняем данные в локальный кэш (БД)
             if (result.isSuccess) {
                 saveNetResponseToCache(checkNotNull(result.getOrThrow().articles))
             }
@@ -59,6 +50,11 @@ class ArticlesRepository(
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
 
         return merge(apiRequest, start)
+            .map { result ->
+                result.map { response ->
+                    response.articles.map { it.toArticle() }
+                }
+            }
     }
 
     private suspend fun saveNetResponseToCache(data: List<ArticleDTO>) {
@@ -66,14 +62,18 @@ class ArticlesRepository(
         database.articleDao().insert(dbos)
     }
 
-    private fun getAllFromDatabase(): Flow<RequestResult<List<ArticleDBO>>> {
+    private fun getAllFromDatabase(): Flow<RequestResult<List<Article>>> {
         val dbRequest = database.articleDao()
             .getAll() //Flow<List<ArticleDBO>>
             .map { RequestResult.Success(it) }
 
         val start = flowOf<RequestResult<List<ArticleDBO>>>(RequestResult.InProgress())
 
-        return merge(start, dbRequest)
+        return merge(start, dbRequest).map { result ->
+            result.map { dbos ->
+                dbos.map { it.toArticle() }
+            }
+        }
     }
 
     suspend fun search(query: String): Flow<Article> {

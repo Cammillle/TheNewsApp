@@ -9,12 +9,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 internal class NewsMainViewModel(
-    private val getAllArticlesUseCase: GetAllArticlesUseCase
+    getAllArticlesUseCase: GetAllArticlesUseCase
 ) : ViewModel() {
 
     val state: StateFlow<State> = getAllArticlesUseCase()
         .map { it.toState() }
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
+
+    fun forceUpdate(){
+
+    }
 }
 
 internal fun RequestResult<List<Article>>.toState(): State {
