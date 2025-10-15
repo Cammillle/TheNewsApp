@@ -23,7 +23,7 @@ class ArticlesRepository(
      * Получение актуальных новостей с отслеживанием состояния запроса ("Обновляется", "Успешно", "Ошибка")
      */
     fun getAll(
-        mergeStrategy: MergeStrategy<RequestResult<List<Article>>>
+        mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResponseMergeStrategy()
     ): Flow<RequestResult<List<Article>>> {
         val cachedArticles = getAllFromDatabase()
             .map { result ->

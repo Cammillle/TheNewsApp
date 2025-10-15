@@ -1,12 +1,12 @@
 package com.example.news.data
 
-sealed class RequestResult<E>(internal val data: E? = null) {
+sealed class RequestResult<E>(val data: E? = null) {
     class InProgress<E>(data: E? = null) : RequestResult<E>(data)
     class Success<E>(data: E) : RequestResult<E>(data)
     class Error<E>(data: E? = null) : RequestResult<E>()
 }
 
-internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
+fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     return when (this) {
         is RequestResult.Success -> {
             val outData: O = mapper(checkNotNull(data))
@@ -19,7 +19,7 @@ internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
     }
 }
 
-internal fun <T> Result<T>.toRequestResult(): RequestResult<T> {
+fun <T> Result<T>.toRequestResult(): RequestResult<T> {
     return when {
         isSuccess -> RequestResult.Success(getOrThrow())
         isFailure -> RequestResult.Error()
