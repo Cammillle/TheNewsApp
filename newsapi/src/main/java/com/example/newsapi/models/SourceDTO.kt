@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SourceDTO(
-    @SerializedName("id") val id: String? = null,
-    @SerializedName("name") val name: String? = null
+    @SerializedName("id") val id: String,
+    @SerializedName("name") val name: String
 )

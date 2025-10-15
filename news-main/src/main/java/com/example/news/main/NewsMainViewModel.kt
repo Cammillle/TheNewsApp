@@ -20,20 +20,3 @@ internal class NewsMainViewModel @Inject constructor(
         .map { it.toState() }
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
 }
-
-
-internal fun RequestResult<List<ArticleUI>>.toState(): State {
-    return when (this) {
-        is RequestResult.Error -> State.Error()
-        is RequestResult.Success -> State.Success(checkNotNull(data))
-        is RequestResult.InProgress -> State.Loading(checkNotNull(data))
-    }
-}
-
-
-sealed class State {
-    object None : State()
-    class Loading(val articles: List<ArticleUI>) : State()
-    class Error : State()
-    class Success(val articles: List<ArticleUI>) : State()
-}

@@ -24,6 +24,3 @@ class GetAllArticlesUseCase @Inject constructor(
     }
 }
 
-private fun Article.toUiArticle(): ArticleUI {
-    TODO("Not yet implemented")
-}

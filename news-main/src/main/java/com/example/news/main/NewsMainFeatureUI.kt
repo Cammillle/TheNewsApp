@@ -31,10 +31,14 @@ internal fun NewsMainScreen(
 
     when (val currentState = state) {
         is State.Success -> Articles(currentState.articles)
-        is State.Error -> TODO()
-        is State.Loading -> TODO()
-        State.None -> TODO()
+        is State.Error -> ErrorMessage()
+        is State.Loading -> Articles(currentState.articles)
+        State.None -> Unit
     }
+}
+
+@Composable
+private fun ErrorMessage() {
 }
 
 @Composable

@@ -21,7 +21,7 @@ interface NewsApi {
         @Query("q") query: String? = null,
         @Query("from") from: Date? = null,
         @Query("to") to: Date? = null,
-        @Query("language") languages: List<LanguageDTO>? = null,
+        @Query("language") languages: List<@JvmSuppressWildcards LanguageDTO>? = null,
         @Query("sortBy") sortBy: SortByDTO? = null,
         @Query("pageSize") pageSize: Int = 100,
         @Query("page") page: Int = 1
