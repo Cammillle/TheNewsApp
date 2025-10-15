@@ -15,10 +15,16 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
 class ArticlesRepository(
-    private val database: NewsDatabase, private val api: NewsApi
+    private val database: NewsDatabase,
+    private val api: NewsApi,
 ) {
 
-    fun getAll(): Flow<RequestResult<List<Article>>> {
+    /**
+     * Получение актуальных новостей с отслеживанием состояния запроса ("Обновляется", "Успешно", "Ошибка")
+     */
+    fun getAll(
+        mergeStrategy: MergeStrategy<RequestResult<List<Article>>>
+    ): Flow<RequestResult<List<Article>>> {
         val cachedArticles = getAllFromDatabase()
             .map { result ->
                 result.map { dbos ->
@@ -33,14 +39,15 @@ class ArticlesRepository(
                 }
             }
 
-        return cachedArticles.combine(remoteArticles) { dbos: RequestResult<List<Article>>, dtos: RequestResult<List<Article>> ->
-            RequestResult.InProgress()
-        }
+        return cachedArticles
+            .combine(remoteArticles) { dbos: RequestResult<List<Article>>, dtos: RequestResult<List<Article>> ->
+                mergeStrategy.merge(dbos, dtos)
+            }
     }
 
     private fun getAllFromServer(): Flow<RequestResult<ResponseDTO<ArticleDTO>>> {
         val apiRequest = flow {
-            emit(api.getEverything())
+            emit(api.getEverything()) //Result<ResponseDTO<ArticleDTO>>
         }.onEach { result ->
             if (result.isSuccess) {
                 saveNetResponseToCache(checkNotNull(result.getOrThrow().articles))
@@ -59,10 +66,14 @@ class ArticlesRepository(
         database.articleDao().insert(dbos)
     }
 
-    private fun getAllFromDatabase(): Flow<RequestResult.Success<List<ArticleDBO>>> {
-        return database.articleDao().getAll()
-            /**Flow<List<ArticleDBO>>*/
+    private fun getAllFromDatabase(): Flow<RequestResult<List<ArticleDBO>>> {
+        val dbRequest = database.articleDao()
+            .getAll() //Flow<List<ArticleDBO>>
             .map { RequestResult.Success(it) }
+
+        val start = flowOf<RequestResult<List<ArticleDBO>>>(RequestResult.InProgress())
+
+        return merge(start, dbRequest)
     }
 
     suspend fun search(query: String): Flow<Article> {
@@ -71,29 +82,3 @@ class ArticlesRepository(
     }
 }
 
-sealed class RequestResult<E>(internal val data: E? = null) {
-    class InProgress<E>(data: E? = null) : RequestResult<E>(data)
-    class Success<E>(data: E) : RequestResult<E>(data)
-    class Error<E>(data: E? = null) : RequestResult<E>()
-}
-
-internal fun <I, O> RequestResult<I>.map(mapper: (I) -> O): RequestResult<O> {
-    return when (this) {
-        is RequestResult.Success -> {
-            val outData: O = mapper(checkNotNull(data))
-            RequestResult.Success(checkNotNull(outData))
-        }
-
-        is RequestResult.Error -> RequestResult.Error(data?.let(mapper))
-
-        is RequestResult.InProgress -> RequestResult.InProgress(data?.let(mapper))
-    }
-}
-
-internal fun <T> Result<T>.toRequestResult(): RequestResult<T> {
-    return when {
-        isSuccess -> RequestResult.Success(getOrThrow())
-        isFailure -> RequestResult.Error()
-        else -> error("Impossible branch")
-    }
-}
