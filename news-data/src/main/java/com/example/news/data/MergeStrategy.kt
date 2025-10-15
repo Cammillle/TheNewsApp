@@ -19,6 +19,9 @@ internal class RequestResponseMergeStrategy<T> : MergeStrategy<RequestResult<T>>
             right is RequestResult.Success && left is RequestResult.InProgress ->
                 merge(right, left)
 
+            right is RequestResult.Success && left is RequestResult.Error ->
+                TODO()
+
             else -> error("Unimplemented branch right=$right & left=$left")
         }
     }

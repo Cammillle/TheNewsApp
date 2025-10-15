@@ -46,14 +46,17 @@ private fun ErrorMessage() {
 private fun Articles(
     @PreviewParameter(
         ArticlesPreviewProvider::class, limit = 1
-    ) articles: List<ArticleUI>
+    ) articles: List<ArticleUI>?
 ) {
     LazyColumn {
-        items(articles) { article ->
-            key(article.id) {
-                Article(article)
+        if(articles!=null){
+            items(articles) { article ->
+                key(article.id) {
+                    Article(article)
+                }
             }
         }
+
     }
 }
 

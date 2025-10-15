@@ -3,7 +3,6 @@ package com.example.news.main
 import com.example.news.data.ArticlesRepository
 import com.example.news.data.RequestResult
 import com.example.news.data.map
-import com.example.news.data.models.Article
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
