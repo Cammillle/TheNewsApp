@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.coroutines)
+    implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.javax.inject)
 

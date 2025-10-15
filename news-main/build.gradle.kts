@@ -52,7 +52,7 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    implementation(libs.coroutines)
+    implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)

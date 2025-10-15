@@ -16,7 +16,7 @@ dependencies{
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.converter.gson)
-    implementation(libs.coroutines)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.adapters)
 }
