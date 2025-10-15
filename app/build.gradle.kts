@@ -18,6 +18,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String","NEWS_API_KEY","\"\"")
+        buildConfigField("String","NEWS_API_BASE_URL","\"\"")
     }
 
     buildTypes {
@@ -37,6 +40,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -59,8 +63,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
+
+    implementation(project(":database"))
+    implementation(project(":news-data"))
+    implementation(project(":news-main"))
+    implementation(project(":newsapi"))
 }

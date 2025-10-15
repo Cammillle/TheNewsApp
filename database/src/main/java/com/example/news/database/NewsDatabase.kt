@@ -13,7 +13,7 @@ abstract class NewsDatabase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
 }
 
-fun newsDatabase(applicationContext: Context): NewsDatabase {
+fun NewsDatabase(applicationContext: Context): NewsDatabase {
     return Room.databaseBuilder(
         checkNotNull(applicationContext.applicationContext),
         NewsDatabase::class.java,
