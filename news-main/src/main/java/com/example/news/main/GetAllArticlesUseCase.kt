@@ -3,13 +3,15 @@ package com.example.news.main
 import com.example.news.data.ArticlesRepository
 import com.example.news.data.RequestResult
 import com.example.news.data.map
+import com.example.news.data.models.Article
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetAllArticlesUseCase(
+class GetAllArticlesUseCase @Inject constructor(
     private val repository: ArticlesRepository
 ) {
-    operator fun invoke(): Flow<RequestResult<List<Article>>> {
+    operator fun invoke(): Flow<RequestResult<List<ArticleUI>>> {
         return repository
             .getAll()
             .map { requestResult ->
@@ -22,6 +24,6 @@ class GetAllArticlesUseCase(
     }
 }
 
-private fun com.example.news.data.models.Article.toUiArticle(): Article {
+private fun Article.toUiArticle(): ArticleUI {
     TODO("Not yet implemented")
 }

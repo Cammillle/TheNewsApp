@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.dagger)
+    debugImplementation(libs.ui.tooling)
     ksp(libs.dagger.compiler)
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)

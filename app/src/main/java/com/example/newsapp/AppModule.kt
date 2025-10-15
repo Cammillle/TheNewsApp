@@ -1,6 +1,7 @@
 package com.example.newsapp
 
 import android.content.Context
+import com.example.news.common.AppDispatchers
 import com.example.news.database.NewsDatabase
 import com.example.newsapi.NewsApi
 import dagger.Module
@@ -28,5 +29,9 @@ object AppModule {
     fun provideDatabase(@ApplicationContext context: Context): NewsDatabase {
         return NewsDatabase(context)
     }
+
+    @Provides
+    @Singleton
+    fun provideAppCoroutineDispatchers(): AppDispatchers = AppDispatchers()
 
 }

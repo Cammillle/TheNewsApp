@@ -21,7 +21,8 @@ internal class NewsMainViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, State.None)
 }
 
-internal fun RequestResult<List<Article>>.toState(): State {
+
+internal fun RequestResult<List<ArticleUI>>.toState(): State {
     return when (this) {
         is RequestResult.Error -> State.Error()
         is RequestResult.Success -> State.Success(checkNotNull(data))
@@ -32,7 +33,7 @@ internal fun RequestResult<List<Article>>.toState(): State {
 
 sealed class State {
     object None : State()
-    class Loading(val articles: List<Article>) : State()
+    class Loading(val articles: List<ArticleUI>) : State()
     class Error : State()
-    class Success(val articles: List<Article>) : State()
+    class Success(val articles: List<ArticleUI>) : State()
 }
