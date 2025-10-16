@@ -66,6 +66,9 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
 
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+
     implementation(project(":database"))
     implementation(project(":news-data"))
     implementation(project(":news-main"))

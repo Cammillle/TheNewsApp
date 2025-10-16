@@ -1,5 +1,6 @@
 package com.example.news.data
 
+import com.example.news.common.Logger
 import com.example.news.data.models.Article
 import com.example.news.database.NewsDatabase
 import com.example.news.database.models.ArticleDBO
@@ -7,6 +8,7 @@ import com.example.newsapi.NewsApi
 import com.example.newsapi.models.ArticleDTO
 import com.example.newsapi.models.ResponseDTO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -18,8 +20,8 @@ import javax.inject.Inject
 class ArticlesRepository @Inject constructor(
     private val database: NewsDatabase,
     private val api: NewsApi,
+    private val logger: Logger
 ) {
-
     /**
      * Получение актуальных новостей с отслеживанием состояния запроса ("Обновляется", "Успешно", "Ошибка")
      */
@@ -30,8 +32,7 @@ class ArticlesRepository @Inject constructor(
         val cachedArticles = getAllFromDatabase()
         val remoteArticles = getAllFromServer()
 
-        return cachedArticles
-            .combine(remoteArticles) { dbos: RequestResult<List<Article>>, dtos: RequestResult<List<Article>> ->
+        return cachedArticles.combine(remoteArticles) { dbos: RequestResult<List<Article>>, dtos: RequestResult<List<Article>> ->
                 mergeStrategy.merge(dbos, dtos)
             }
     }
@@ -44,14 +45,15 @@ class ArticlesRepository @Inject constructor(
             if (result.isSuccess) {
                 saveNetResponseToCache(checkNotNull(result.getOrThrow().articles))
             }
-        }.map {
-            it.toRequestResult()
-        }
+        }.onEach { result ->
+            if (result.isFailure) {
+                logger.e(LOG_TAG, "Error getting from server = ${result.exceptionOrNull()}")
+            }
+        }.map { it.toRequestResult() }
 
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
 
-        return merge(apiRequest, start)
-            .map { result ->
+        return merge(apiRequest, start).map { result ->
                 result.map { response ->
                     response.articles.map { it.toArticle() }
                 }
@@ -64,9 +66,11 @@ class ArticlesRepository @Inject constructor(
     }
 
     private fun getAllFromDatabase(): Flow<RequestResult<List<Article>>> {
-        val dbRequest = database.articleDao()
-            .getAll() //Flow<List<ArticleDBO>>
-            .map { RequestResult.Success(it) }
+        val dbRequest = database.articleDao().getAll() //Flow<List<ArticleDBO>>
+            .map { RequestResult.Success(it) }.catch {
+                RequestResult.Error<List<ArticleDBO>>(error = it)
+                logger.e(LOG_TAG, "Error getting from database = $it")
+            }
 
         val start = flowOf<RequestResult<List<ArticleDBO>>>(RequestResult.InProgress())
 
@@ -80,6 +84,10 @@ class ArticlesRepository @Inject constructor(
     suspend fun search(query: String): Flow<Article> {
         api.getEverything()
         TODO()
+    }
+
+    private companion object {
+        const val LOG_TAG = "ArticlesRepository"
     }
 }
 

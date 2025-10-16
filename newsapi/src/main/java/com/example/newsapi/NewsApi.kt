@@ -16,7 +16,7 @@ import java.util.Date
 
 interface NewsApi {
 
-    @GET("/everything")
+    @GET("everything")
     suspend fun getEverything(
         @Query("q") query: String? = null,
         @Query("from") from: Date? = null,
@@ -43,9 +43,10 @@ private fun retrofit(
     okHttpClient: OkHttpClient?
 ): Retrofit {
 
-    val modifiedOkHttpClient: OkHttpClient = (okHttpClient?.newBuilder() ?: OkHttpClient.Builder())
-        .addInterceptor(NewsApiKeyInterceptor(apiKey))
-        .build()
+    val modifiedOkHttpClient: OkHttpClient =
+        (okHttpClient?.newBuilder() ?: OkHttpClient.Builder())
+            .addInterceptor(NewsApiKeyInterceptor(apiKey))
+            .build()
 
     val retrofit =
         Retrofit.Builder()
