@@ -20,7 +20,7 @@ internal class RequestResponseMergeStrategy<T> : MergeStrategy<RequestResult<T>>
                 merge(right, left)
 
             right is RequestResult.Success && left is RequestResult.Error ->
-                TODO()
+                merge(right, left)
 
             else -> error("Unimplemented branch right=$right & left=$left")
         }
@@ -38,7 +38,6 @@ internal class RequestResponseMergeStrategy<T> : MergeStrategy<RequestResult<T>>
         }
     }
 
-
     private fun merge(
         cache: RequestResult.Success<T>,
         server: RequestResult.InProgress<T>
@@ -47,6 +46,13 @@ internal class RequestResponseMergeStrategy<T> : MergeStrategy<RequestResult<T>>
             server.data != null -> RequestResult.InProgress(server.data)
             else -> RequestResult.InProgress(cache.data)
         }
+    }
+
+    private fun merge(
+        cache: RequestResult.Success<T>,
+        server: RequestResult.Error<T>
+    ): RequestResult<T> {
+        return RequestResult.Error(data = cache.data)
     }
 
 
