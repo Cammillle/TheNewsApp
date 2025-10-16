@@ -18,6 +18,8 @@ internal fun Article.toUiArticle(): ArticleUI {
         title = title,
         description = description,
         imageUrl = urlToImage,
-        url = url
+        url = url,
+        author = author,
+        source = source
     )
 }

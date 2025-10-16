@@ -8,12 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.news.main.AppTextStyles
 import com.example.news.main.ui.NewsMainScreen
 import com.example.newsapp.ui.theme.NewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var textStyles: AppTextStyles
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,7 +28,12 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { paddingValues ->
-                    NewsMainScreen(modifier = Modifier.padding(paddingValues))
+                    NewsMainScreen(
+                        textStyles = textStyles,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .padding(paddingValues)
+                    )
                 }
             }
         }

@@ -1,6 +1,10 @@
 package com.example.newsapp
 
 import android.content.Context
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import com.example.news.common.AndroidLogcatLogger
 import com.example.news.common.AppDispatchers
 import com.example.news.common.Logger
@@ -48,5 +52,16 @@ object AppModule {
 
     @Provides
     fun provideLogger(): Logger = AndroidLogcatLogger()
+
+    @Provides
+    @Singleton
+    fun provideFontFamily(@ApplicationContext context: Context): FontFamily {
+        return FontFamily(
+            Font(R.font.sf_pro_bold, FontWeight.Bold),
+            Font(R.font.sf_pro_medium, FontWeight.Medium),
+            Font(R.font.sf_pro_regular, FontWeight.Normal),
+            Font(R.font.sf_pro_regularitalic, FontWeight.Normal, FontStyle.Italic)
+        )
+    }
 
 }

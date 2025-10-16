@@ -15,34 +15,41 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.news.main.AppTextStyles
 import com.example.news.main.NewsMainViewModel
 import com.example.news.main.State
+import javax.inject.Inject
 
 @Composable
-fun NewsMainScreen(modifier: Modifier = Modifier) {
-    NewsMainScreen(viewModel = viewModel(), modifier = modifier)
+fun NewsMainScreen(
+    modifier: Modifier = Modifier,
+    textStyles: AppTextStyles
+) {
+    NewsMainScreen(viewModel = viewModel(), modifier = modifier, textStyles = textStyles)
 }
 
 @Composable
 internal fun NewsMainScreen(
     viewModel: NewsMainViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textStyles: AppTextStyles
 ) {
     val state by viewModel.state.collectAsState()
     val currentState = state
-    NewsMainContent(currentState, modifier)
+    NewsMainContent(currentState, modifier, textStyles)
 }
 
 @Composable
 private fun NewsMainContent(
     currentState: State,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textStyles: AppTextStyles
 ) {
     Column(modifier) {
         when (currentState) {
-            is State.Success -> ArticleList(currentState)
+            is State.Success -> ArticleList(currentState, textStyles = textStyles)
             is State.Error -> ErrorMessage(currentState)
-            is State.Loading -> ProgressIndicator(currentState)
+            is State.Loading -> ProgressIndicator(currentState, textStyles = textStyles)
             State.None -> Unit
         }
     }
@@ -67,7 +74,8 @@ private fun ErrorMessage(state: State.Error) {
 @Composable
 private fun ProgressIndicator(
     state: State.Loading,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    textStyles: AppTextStyles
 ) {
     Column {
         Box(
@@ -80,7 +88,7 @@ private fun ProgressIndicator(
         }
         val articles = state.articles
         if (articles != null) {
-            ArticleList(articles, modifier)
+            ArticleList(articles, modifier, textStyles)
         }
     }
 }
