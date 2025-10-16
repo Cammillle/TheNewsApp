@@ -4,7 +4,7 @@ sealed class RequestResult<E>(val data: E? = null) {
 
     class InProgress<E>(data: E? = null) : RequestResult<E>(data)
 
-    class Success<E>(data: E) : RequestResult<E>(data)
+    class Success<E>(data: E?) : RequestResult<E>(data)
 
     class Error<E>(data: E? = null, val error: Throwable? = null) : RequestResult<E>(data)
 }

@@ -12,12 +12,12 @@ import java.util.Date
 @TypeConverters(Converters::class)
 data class ArticleDBO(
     @Embedded(prefix = "sourcedbo") val source: SourceDBO?,
-    @ColumnInfo("author") val author: String,
-    @ColumnInfo("title") val title: String,
-    @ColumnInfo("description") val description: String,
-    @ColumnInfo("url") val url: String,
-    @ColumnInfo("urlToImage") val urlToImage: String,
-    @ColumnInfo("publishedAt") val publishedAt: Date,
+    @ColumnInfo("author") val author: String?,
+    @ColumnInfo("title") val title: String?,
+    @ColumnInfo("description") val description: String?,
+    @ColumnInfo("url") val url: String?,
+    @ColumnInfo("urlToImage") val urlToImage: String?,
+    @ColumnInfo("publishedAt") val publishedAt: Date?,
     @ColumnInfo("content") val content: String?,
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
 )

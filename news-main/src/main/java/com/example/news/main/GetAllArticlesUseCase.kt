@@ -10,9 +10,9 @@ import javax.inject.Inject
 class GetAllArticlesUseCase @Inject constructor(
     private val repository: ArticlesRepository
 ) {
-    operator fun invoke(): Flow<RequestResult<List<ArticleUI>>> {
+    operator fun invoke(query: String): Flow<RequestResult<List<ArticleUI>>> {
         return repository
-            .getAll()
+            .getAll(query)
             .map { requestResult ->
                 requestResult.map { articles ->
                     articles.map {

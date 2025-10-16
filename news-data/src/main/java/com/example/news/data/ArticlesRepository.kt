@@ -26,20 +26,21 @@ class ArticlesRepository @Inject constructor(
      * Получение актуальных новостей с отслеживанием состояния запроса ("Обновляется", "Успешно", "Ошибка")
      */
     fun getAll(
+        query: String,
         mergeStrategy: MergeStrategy<RequestResult<List<Article>>> = RequestResponseMergeStrategy()
     ): Flow<RequestResult<List<Article>>> {
 
         val cachedArticles = getAllFromDatabase()
-        val remoteArticles = getAllFromServer()
+        val remoteArticles = getAllFromServer(query)
 
         return cachedArticles.combine(remoteArticles) { dbos: RequestResult<List<Article>>, dtos: RequestResult<List<Article>> ->
-                mergeStrategy.merge(dbos, dtos)
-            }
+            mergeStrategy.merge(dbos, dtos)
+        }
     }
 
-    private fun getAllFromServer(): Flow<RequestResult<List<Article>>> {
+    private fun getAllFromServer(query: String): Flow<RequestResult<List<Article>>> {
         val apiRequest = flow {
-            emit(api.getEverything()) //Result<ResponseDTO<ArticleDTO>>
+            emit(api.getEverything(query)) //Result<ResponseDTO<ArticleDTO>>
         }.onEach { result ->
             // Если запрос прошел успешно, сохраняем данные в локальный кэш (БД)
             if (result.isSuccess) {
@@ -54,10 +55,10 @@ class ArticlesRepository @Inject constructor(
         val start = flowOf<RequestResult<ResponseDTO<ArticleDTO>>>(RequestResult.InProgress())
 
         return merge(apiRequest, start).map { result ->
-                result.map { response ->
-                    response.articles.map { it.toArticle() }
-                }
+            result.map { response ->
+                response.articles.map { it.toArticle() }
             }
+        }
     }
 
     private suspend fun saveNetResponseToCache(data: List<ArticleDTO>) {
