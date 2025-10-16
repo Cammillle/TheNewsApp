@@ -60,5 +60,8 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     ksp(libs.dagger.hilt.compiler)
 
+    implementation(libs.coil.compose)
+    implementation(libs.coil.core)
+
     implementation(project(":news-data"))
 }

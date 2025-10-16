@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.example.news.main.NewsMainScreen
+import com.example.news.main.ui.NewsMainScreen
 import com.example.newsapp.ui.theme.NewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 

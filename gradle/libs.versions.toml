@@ -22,6 +22,8 @@ ksp = "2.2.10-2.0.2"
 dagger = "2.57.1"
 javax-inject = "1"
 uiTooling = "1.9.3"
+coil = "2.6.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +71,8 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javax-inject" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
+coil-core = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
