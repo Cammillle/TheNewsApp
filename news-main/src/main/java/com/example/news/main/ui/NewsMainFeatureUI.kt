@@ -18,7 +18,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -26,6 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.news.main.AppTextStyles
 import com.example.news.main.NewsMainViewModel
 import com.example.news.main.State
+import com.example.news.main.navigation.AppNavGraph
 import com.example.news.main.navigation.rememberNavigationState
 
 @Composable
@@ -52,7 +52,11 @@ fun NewsMainScreen(
 
                     NavigationBarItem(
                         selected = selected,
-                        onClick = {},
+                        onClick = {
+                            if (!selected) {
+                                navigationState.navigateTo(route = item.screen.route)
+                            }
+                        },
                         icon = { Icon(item.icon, contentDescription = null) },
                         label = { Text(text = item.titleResId) },
                         colors = NavigationBarItemDefaults.colors(
@@ -65,15 +69,21 @@ fun NewsMainScreen(
         }
 
     ) { paddingValues ->
-        NewsMainScreen(
-            viewModel = viewModel(),
-            modifier = modifier.padding(paddingValues),
-            textStyles = textStyles
+
+        AppNavGraph(
+            navHostController = navigationState.navHostController,
+
+            articleListContent = {
+                NewsMainScreen(
+                    viewModel = viewModel(),
+                    modifier = modifier.padding(paddingValues),
+                    textStyles = textStyles
+                )
+            },
+            favouriteScreenContent = { Text("Favourite") },
+            searchScreenContent = { Text("Search") }
         )
-
     }
-
-
 }
 
 @Composable
