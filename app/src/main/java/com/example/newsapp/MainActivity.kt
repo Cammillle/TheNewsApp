@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.news.main.AppTextStyles
@@ -25,14 +25,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NewsAppTheme {
-                Scaffold(
+                Surface(
                     modifier = Modifier.fillMaxSize()
-                ) { paddingValues ->
+                ) {
                     NewsMainScreen(
                         textStyles = textStyles,
                         modifier = Modifier
                             .padding(8.dp)
-                            .padding(paddingValues)
                     )
                 }
             }

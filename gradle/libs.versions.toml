@@ -18,6 +18,7 @@ retrofit-adapters = "1.1.0"
 appcompat = "1.7.1"
 material = "1.13.0"
 material3 = "1.5.4"
+navigationCompose = "2.9.3"
 room = "2.8.2"
 ksp = "2.2.10-2.0.2"
 dagger = "2.57.1"
@@ -49,6 +50,8 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material3-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "material3" }
+
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
 
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
