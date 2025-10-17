@@ -10,8 +10,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.news.main.AppTextStyles
-import com.example.news.main.ui.NewsMainScreen
+import com.example.news.main.NewsMainViewModel
 import com.example.newsapp.ui.theme.NewsAppTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.news.main.ui.NewsMainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -28,10 +30,12 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
+                    val viewModel: NewsMainViewModel = viewModel()
+
                     NewsMainScreen(
+                        viewModel = viewModel,
                         textStyles = textStyles,
-                        modifier = Modifier
-                            .padding(8.dp)
+                        modifier = Modifier.padding(8.dp)
                     )
                 }
             }

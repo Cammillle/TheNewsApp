@@ -31,7 +31,8 @@ import com.example.news.main.navigation.rememberNavigationState
 @Composable
 fun NewsMainScreen(
     modifier: Modifier = Modifier,
-    textStyles: AppTextStyles
+    textStyles: AppTextStyles,
+    viewModel: NewsMainViewModel
 ) {
     val navigationState = rememberNavigationState()
 
@@ -74,8 +75,8 @@ fun NewsMainScreen(
             navHostController = navigationState.navHostController,
 
             articleListContent = {
-                NewsMainScreen(
-                    viewModel = viewModel(),
+                NewsMainScreenInternal(
+                    viewModel = viewModel,
                     modifier = modifier.padding(paddingValues),
                     textStyles = textStyles
                 )
@@ -87,7 +88,7 @@ fun NewsMainScreen(
 }
 
 @Composable
-internal fun NewsMainScreen(
+internal fun NewsMainScreenInternal(
     viewModel: NewsMainViewModel,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles

@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @HiltViewModel
-internal class NewsMainViewModel @Inject constructor(
+ class NewsMainViewModel @Inject constructor(
     getAllArticlesUseCase: Provider<GetAllArticlesUseCase>
 ) : ViewModel() {
 
