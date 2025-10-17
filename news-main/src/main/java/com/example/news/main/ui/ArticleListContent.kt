@@ -1,5 +1,6 @@
 package com.example.news.main.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,7 +30,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -41,16 +46,15 @@ import kotlin.math.abs
 
 @Composable
 internal fun ArticleList(
-    articleState: State.Success,
-    modifier: Modifier = Modifier,
-    textStyles: AppTextStyles
+    articleState: State.Success, modifier: Modifier = Modifier, textStyles: AppTextStyles
 ) {
     ArticleList(articles = articleState.articles, modifier = modifier, textStyles)
 }
 
 @Composable
 internal fun ArticleList(
-    @PreviewParameter(ArticlesPreviewProvider::class, limit = 1) articles: List<ArticleUI>,
+    @PreviewParameter(ArticlesPreviewProvider::class, limit = 1)
+    articles: List<ArticleUI>,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles
 ) {
@@ -100,17 +104,16 @@ internal fun Article(
                 .height(100.dp)
                 .padding(vertical = 4.dp)
         ) {
-            val title = article.title
-            if (title != null) {
+            article.title?.let { title ->
                 Text(
                     text = title,
                     style = textStyles.h2Bold,
-                    maxLines = 4
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            val author = article.author
-            if (author != null) {
+            article.author?.let { author ->
                 Text(
                     text = "By $author",
                     color = Color.Gray,
@@ -119,45 +122,62 @@ internal fun Article(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
-
+            Spacer(modifier = Modifier.height(8.dp))
             /**Метаданные**/
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val source = article.source
-                if (source != null) {
-                    Text(
-                        text = source.name!!,
-                        color = Color(0xFF69BDFD),
-                        style = textStyles.h3Bold,
-                        maxLines = 1
-                    )
-                }
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    //modifier = Modifier.size(12.dp),
-                    text = "●",
-                    style = textStyles.p1Regular,
-                    color = MaterialTheme.colorScheme.outline
-                )
-                Spacer(modifier = Modifier.width(6.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    article.source?.name?.let { name ->
+                        Text(
+                            text = name,
+                            color = Color(0xFF69BDFD),
+                            style = textStyles.h3Bold,
+                            maxLines = 1
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "●",
+                            style = textStyles.p1Regular,
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                    }
 
-                if (article.publishedAt != null) {
-                    val timePassed = formatTimeDifference(
-                        publishedDate = article.publishedAt,
-                        currentDate = Date()
-                    )
-                    Text(
-                        text = timePassed,
-                        style = textStyles.h3Medium,
-                        color = Color.Gray
-                    )
+                    article.publishedAt?.let { publishedAt ->
+                        val timePassed = formatTimeDifference(
+                            publishedDate = article.publishedAt, currentDate = Date()
+                        )
+                        Text(
+                            text = timePassed, style = textStyles.h3Medium, color = Color.Gray
+                        )
+                    }
                 }
-
+                Row(horizontalArrangement = Arrangement.End) {
+                    IconButton(
+                        onClick = { }, modifier = Modifier.padding(start = 16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.MoreHoriz,
+                            contentDescription = "More options",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             }
         }
     }
+    Divider(
+        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+        thickness = 1.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 8.dp)
+    )
 }
 
 private fun formatTimeDifference(publishedDate: Date, currentDate: Date): String {
