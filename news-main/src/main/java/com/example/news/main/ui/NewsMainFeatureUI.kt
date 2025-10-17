@@ -3,9 +3,12 @@ package com.example.news.main.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -13,21 +16,26 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.news.main.AppTextStyles
 import com.example.news.main.NewsMainViewModel
+import com.example.news.main.R
 import com.example.news.main.State
 import com.example.news.main.navigation.AppNavGraph
 import com.example.news.main.navigation.rememberNavigationState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsMainScreen(
     modifier: Modifier = Modifier,
@@ -37,6 +45,32 @@ fun NewsMainScreen(
     val navigationState = rememberNavigationState()
 
     Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                actions = {
+                },
+                title = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier=Modifier.padding(end = 6.dp),
+                            painter = painterResource(R.drawable.newslogo_1),
+                            contentDescription = null
+                        )
+                        Text(
+                            color = Color.Black,
+                            style = textStyles.h1Bold,
+                            text = "News 24"
+                        )
+                    }
+
+                }
+
+            )
+        },
+
+
         bottomBar = {
             NavigationBar {
                 val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
