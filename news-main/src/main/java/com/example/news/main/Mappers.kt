@@ -20,6 +20,7 @@ internal fun Article.toUiArticle(): ArticleUI {
         imageUrl = urlToImage,
         url = url,
         author = author,
-        source = source
+        source = source,
+        publishedAt = publishedAt
     )
 }

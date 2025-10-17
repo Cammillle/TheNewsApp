@@ -12,7 +12,7 @@ import javax.inject.Provider
 
 @HiltViewModel
 internal class NewsMainViewModel @Inject constructor(
-    private val getAllArticlesUseCase: Provider<GetAllArticlesUseCase>
+    getAllArticlesUseCase: Provider<GetAllArticlesUseCase>
 ) : ViewModel() {
 
     val state: StateFlow<State> = getAllArticlesUseCase.get().invoke(query = "android")
