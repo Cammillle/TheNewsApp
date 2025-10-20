@@ -66,6 +66,10 @@ internal fun ArticleList(
     textStyles: AppTextStyles,
     onArticleClickListener: (ArticleUI) -> Unit
 ) {
+    Column(modifier.padding(top = 10.dp)) {
+        ChipsMenu()
+    }
+
     LazyColumn(modifier.padding(top = 10.dp)) {
         items(articles) { article ->
             key(article.id) {
