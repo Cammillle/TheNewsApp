@@ -17,8 +17,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,11 +28,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.news.main.AppTextStyles
+import com.example.news.main.ArticleUI
 import com.example.news.main.NewsMainViewModel
 import com.example.news.main.R
 import com.example.news.main.State
 import com.example.news.main.navigation.AppNavGraph
 import com.example.news.main.navigation.rememberNavigationState
+import com.example.news.main.ui.articlePost.ArticlePostContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +55,7 @@ fun NewsMainScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            modifier=Modifier.padding(end = 6.dp),
+                            modifier = Modifier.padding(end = 6.dp),
                             painter = painterResource(R.drawable.newslogo_1),
                             contentDescription = null
                         )
@@ -113,7 +113,17 @@ fun NewsMainScreen(
                 NewsMainScreenInternal(
                     viewModel = viewModel,
                     modifier = modifier.padding(paddingValues),
-                    textStyles = textStyles
+                    textStyles = textStyles,
+                    onArticleClickListener = { articleUI ->
+                        navigationState.navigateToArticlePost(articleUI)
+                    }
+                )
+            },
+            articlePostContent = { article ->
+                ArticlePostContent(
+                    article,
+                    textStyles = textStyles,
+                    modifier = modifier.padding(paddingValues)
                 )
             },
             favouriteScreenContent = { Text("Favourite") },
@@ -126,24 +136,41 @@ fun NewsMainScreen(
 internal fun NewsMainScreenInternal(
     viewModel: NewsMainViewModel,
     modifier: Modifier = Modifier,
-    textStyles: AppTextStyles
+    textStyles: AppTextStyles,
+    onArticleClickListener: (ArticleUI) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val currentState = state
-    NewsMainContent(currentState, modifier, textStyles)
+    NewsMainContent(
+        currentState,
+        modifier,
+        textStyles,
+        onArticleClickListener = onArticleClickListener
+    )
 }
 
 @Composable
 private fun NewsMainContent(
     currentState: State,
     modifier: Modifier = Modifier,
-    textStyles: AppTextStyles
+    textStyles: AppTextStyles,
+    onArticleClickListener: (ArticleUI) -> Unit
 ) {
     Column(modifier) {
         when (currentState) {
-            is State.Success -> ArticleList(currentState, textStyles = textStyles)
+            is State.Success -> ArticleList(
+                currentState,
+                textStyles = textStyles,
+                onArticleClickListener = onArticleClickListener
+            )
+
             is State.Error -> ErrorMessage(currentState)
-            is State.Loading -> ProgressIndicator(currentState, textStyles = textStyles)
+            is State.Loading -> ProgressIndicator(
+                currentState,
+                textStyles = textStyles,
+                onArticleClickListener = onArticleClickListener
+            )
+
             State.None -> Unit
         }
     }
@@ -169,7 +196,8 @@ private fun ErrorMessage(state: State.Error) {
 private fun ProgressIndicator(
     state: State.Loading,
     modifier: Modifier = Modifier,
-    textStyles: AppTextStyles
+    textStyles: AppTextStyles,
+    onArticleClickListener: (ArticleUI) -> Unit
 ) {
     Column {
         Box(
@@ -182,7 +210,12 @@ private fun ProgressIndicator(
         }
         val articles = state.articles
         if (articles != null) {
-            ArticleList(articles, modifier, textStyles)
+            ArticleList(
+                articles,
+                modifier,
+                textStyles,
+                onArticleClickListener = onArticleClickListener
+            )
         }
     }
 }

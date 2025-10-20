@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.news.main.ArticleUI
 
 class NavigationState(
     val navHostController: NavHostController
@@ -17,6 +18,10 @@ class NavigationState(
             launchSingleTop = true
             restoreState = true
         }
+    }
+
+    fun navigateToArticlePost(article: ArticleUI) {
+        navHostController.navigate(Screen.ArticlePost.getRouteWithArgs(article))
     }
 }
 

@@ -1,18 +1,16 @@
 package com.example.news.main.navigation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.news.main.NewsMainViewModel
+import com.example.news.main.ArticleUI
 
 @Composable
 fun AppNavGraph(
     navHostController: NavHostController,
     articleListContent: @Composable () -> Unit,
-    //articlePostContent: @Composable (FeedPost) -> Unit,
+    articlePostContent: @Composable (ArticleUI) -> Unit,
     favouriteScreenContent: @Composable () -> Unit,
     searchScreenContent: @Composable () -> Unit
 ) {
@@ -20,9 +18,11 @@ fun AppNavGraph(
         navController = navHostController,
         startDestination = Screen.Home.route
     ) {
-        composable(route = Screen.Home.route) {
-            articleListContent()
-        }
+        homeScreenNavGraph(
+            articleListContent,
+            articlePostContent
+        )
+
         composable(route = Screen.Search.route) {
             searchScreenContent()
         }

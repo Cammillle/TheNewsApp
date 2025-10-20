@@ -46,9 +46,17 @@ import kotlin.math.abs
 
 @Composable
 internal fun ArticleList(
-    articleState: State.Success, modifier: Modifier = Modifier, textStyles: AppTextStyles
+    articleState: State.Success,
+    modifier: Modifier = Modifier,
+    textStyles: AppTextStyles,
+    onArticleClickListener: (ArticleUI) -> Unit
 ) {
-    ArticleList(articles = articleState.articles, modifier = modifier, textStyles)
+    ArticleList(
+        articles = articleState.articles,
+        modifier = modifier,
+        textStyles,
+        onArticleClickListener = onArticleClickListener
+    )
 }
 
 @Composable
@@ -56,12 +64,18 @@ internal fun ArticleList(
     @PreviewParameter(ArticlesPreviewProvider::class, limit = 1)
     articles: List<ArticleUI>,
     modifier: Modifier = Modifier,
-    textStyles: AppTextStyles
+    textStyles: AppTextStyles,
+    onArticleClickListener: (ArticleUI) -> Unit
 ) {
     LazyColumn(modifier.padding(top = 10.dp)) {
         items(articles) { article ->
             key(article.id) {
-                Article(article, textStyles = textStyles)
+                Article(
+                    article,
+                    textStyles = textStyles,
+                    onArticleClickListener = {
+                        onArticleClickListener(article)
+                    })
             }
         }
     }
@@ -72,6 +86,7 @@ internal fun Article(
     article: ArticleUI,
     textStyles: AppTextStyles,
     modifier: Modifier = Modifier,
+    onArticleClickListener: () -> Unit
 ) {
     Row(
         modifier
@@ -158,7 +173,8 @@ internal fun Article(
                 }
                 Row(horizontalArrangement = Arrangement.End) {
                     IconButton(
-                        onClick = { }, modifier = Modifier.padding(start = 16.dp)
+                        onClick = { onArticleClickListener() },
+                        modifier = Modifier.padding(start = 16.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.MoreHoriz,
