@@ -218,7 +218,8 @@ class ArticlePreviewProvider : PreviewParameterProvider<ArticleUI> {
                 url = "",
                 author = "Julian Chokkattu",
                 source = Source(id = "wired", name = "Wired"),
-                publishedAt = Date("2025-10-07T14:23:13Z".toLong())
+                publishedAt = Date("2025-10-07T14:23:13Z".toLong()),
+                content = ""
             ), ArticleUI(
                 2,
                 "Gemini 1.5 Release",
@@ -227,7 +228,8 @@ class ArticlePreviewProvider : PreviewParameterProvider<ArticleUI> {
                 url = "",
                 author = "Julian Chokkattu",
                 source = Source(id = "wired", name = "Wired"),
-                publishedAt = Date("2025-10-07T14:23:13Z".toLong())
+                publishedAt = Date("2025-10-07T14:23:13Z".toLong()),
+                content = ""
             ), ArticleUI(
                 3,
                 "Shape animations (10 min)",
@@ -236,7 +238,8 @@ class ArticlePreviewProvider : PreviewParameterProvider<ArticleUI> {
                 url = "",
                 author = "Julian Chokkattu",
                 source = Source(id = "wired", name = "Wired"),
-                publishedAt = Date("2025-10-07T14:23:13Z".toLong())
+                publishedAt = Date("2025-10-07T14:23:13Z".toLong()),
+                content = ""
             )
         )
 }

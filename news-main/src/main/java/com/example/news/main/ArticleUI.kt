@@ -12,5 +12,6 @@ data class ArticleUI(
     val publishedAt: Date?,
     val url: String?,
     val author: String?,
-    val source: Source?
+    val source: Source?,
+    val content: String?
 )

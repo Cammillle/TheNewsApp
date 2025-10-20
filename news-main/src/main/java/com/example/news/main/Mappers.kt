@@ -21,6 +21,7 @@ internal fun Article.toUiArticle(): ArticleUI {
         url = url,
         author = author,
         source = source,
-        publishedAt = publishedAt
+        publishedAt = publishedAt,
+        content = content
     )
 }
