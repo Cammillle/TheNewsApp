@@ -1,4 +1,4 @@
-package com.example.news.main.ui
+package com.example.news.main.ui.articleList
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,12 +36,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import com.example.news.data.models.Source
-import com.example.news.main.AppTextStyles
+import com.example.news.main.utils.AppTextStyles
 import com.example.news.main.ArticleUI
 import com.example.news.main.State
+import com.example.news.main.utils.formatTimeDifference
 import java.util.Date
-import java.util.concurrent.TimeUnit
-import kotlin.math.abs
 
 
 @Composable
@@ -112,7 +111,7 @@ internal fun Article(
                 Spacer(modifier = Modifier.width(12.dp))
             }
         }
-        /**Блок с контентом*/
+        /***Блок с контентом*/
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -133,11 +132,11 @@ internal fun Article(
                     text = "By $author",
                     color = Color.Gray,
                     style = textStyles.h3Medium,
-                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
+
             /**Метаданные**/
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -194,32 +193,6 @@ internal fun Article(
             .padding(horizontal = 16.dp)
             .padding(bottom = 8.dp)
     )
-}
-
-private fun formatTimeDifference(publishedDate: Date, currentDate: Date): String {
-    val diffInMillis = currentDate.time - publishedDate.time
-    val isFuture = diffInMillis < 0
-    val absDiffInMillis = abs(diffInMillis)
-
-    val seconds = TimeUnit.MILLISECONDS.toSeconds(absDiffInMillis)
-    val minutes = TimeUnit.MILLISECONDS.toMinutes(absDiffInMillis)
-    val hours = TimeUnit.MILLISECONDS.toHours(absDiffInMillis)
-    val days = TimeUnit.MILLISECONDS.toDays(absDiffInMillis)
-    val weeks = days / 7
-    val months = days / 30
-    val years = days / 365
-
-    val suffix = if (isFuture) " from now" else " ago"
-
-    return when {
-        seconds < 60 -> if (isFuture) "soon" else "just now"
-        minutes < 60 -> "${minutes}m$suffix"
-        hours < 24 -> "${hours}h$suffix"
-        days < 7 -> "${days}d$suffix"
-        weeks < 4 -> "${weeks}w$suffix"
-        months < 12 -> "${months}mo$suffix"
-        else -> "${years}y$suffix"
-    }
 }
 
 

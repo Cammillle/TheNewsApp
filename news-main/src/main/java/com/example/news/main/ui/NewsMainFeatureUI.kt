@@ -27,13 +27,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.news.main.AppTextStyles
+import com.example.news.main.utils.AppTextStyles
 import com.example.news.main.ArticleUI
 import com.example.news.main.NewsMainViewModel
 import com.example.news.main.R
 import com.example.news.main.State
 import com.example.news.main.navigation.AppNavGraph
 import com.example.news.main.navigation.rememberNavigationState
+import com.example.news.main.ui.articleList.ArticleList
 import com.example.news.main.ui.articlePost.ArticlePostContent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,8 +45,11 @@ fun NewsMainScreen(
     viewModel: NewsMainViewModel
 ) {
     val navigationState = rememberNavigationState()
-
+    val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
     Scaffold(
+
+        /***AppBar*/
         topBar = {
             CenterAlignedTopAppBar(
                 actions = {
@@ -65,47 +69,48 @@ fun NewsMainScreen(
                             text = "News 24"
                         )
                     }
-
                 }
-
             )
         },
 
-
+        /**BottomBar*/
         bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
+            val isArticlePostScreen =
+                currentDestination?.route?.contains("article_post") == true
 
-                val items = listOf(
-                    NavigationItem.Home,
-                    NavigationItem.Search,
-                    NavigationItem.Favourite
-                )
-                items.forEach { item ->
-                    val selected = navBackStackEntry?.destination?.hierarchy?.any {
-                        it.route == item.screen.route
-                    } ?: false
-
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            if (!selected) {
-                                navigationState.navigateTo(route = item.screen.route)
-                            }
-                        },
-                        icon = { Icon(item.icon, contentDescription = null) },
-                        label = { Text(text = item.titleResId) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.onBackground,
-                            selectedTextColor = MaterialTheme.colorScheme.onBackground
-                        )
+            if (!isArticlePostScreen) {
+                NavigationBar {
+                    val items = listOf(
+                        NavigationItem.Home,
+                        NavigationItem.Search,
+                        NavigationItem.Favourite
                     )
+                    items.forEach { item ->
+                        val selected = navBackStackEntry?.destination?.hierarchy?.any {
+                            it.route == item.screen.route
+                        } ?: false
+
+                        NavigationBarItem(
+                            selected = selected,
+                            onClick = {
+                                if (!selected) {
+                                    navigationState.navigateTo(route = item.screen.route)
+                                }
+                            },
+                            icon = { Icon(item.icon, contentDescription = null) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.onBackground,
+                                selectedTextColor = MaterialTheme.colorScheme.onBackground
+                            )
+                        )
+                    }
                 }
             }
         }
 
     ) { paddingValues ->
 
+        /**AppNavGraph*/
         AppNavGraph(
             navHostController = navigationState.navHostController,
 
@@ -123,7 +128,7 @@ fun NewsMainScreen(
                 ArticlePostContent(
                     article,
                     textStyles = textStyles,
-                    modifier = modifier.padding(paddingValues)
+                    modifier = Modifier.padding(paddingValues)
                 )
             },
             favouriteScreenContent = { Text("Favourite") },

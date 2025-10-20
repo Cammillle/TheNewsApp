@@ -1,7 +1,9 @@
-package com.example.news.main
+package com.example.news.main.utils
 
 import com.example.news.data.RequestResult
 import com.example.news.data.models.Article
+import com.example.news.main.ArticleUI
+import com.example.news.main.State
 
 
 internal fun RequestResult<List<ArticleUI>>.toState(): State {

@@ -1,7 +1,6 @@
 package com.example.news.main.navigation
 
 import android.net.Uri
-import com.example.news.data.models.Article
 import com.example.news.main.ArticleUI
 import com.google.gson.Gson
 

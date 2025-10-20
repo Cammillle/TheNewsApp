@@ -1,43 +1,48 @@
 package com.example.news.main.ui.articlePost
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
-import com.example.news.main.AppTextStyles
+import com.example.news.main.utils.AppTextStyles
 import com.example.news.main.ArticleUI
+import com.example.news.main.utils.formatTimeDifference
+import java.util.Date
 
 @Composable
 fun ArticlePostContent(
     article: ArticleUI,
     textStyles: AppTextStyles,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
-    Column(modifier.verticalScroll(rememberScrollState())) {
+
+    /**Scrollable Column*/
+    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+
+        /**AsyncImage*/
         Row(
-            modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
-
         ) {
             article.imageUrl?.let { imageUrl ->
                 var isImageVisible by remember { mutableStateOf(true) }
@@ -53,39 +58,60 @@ fun ArticlePostContent(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .height(220.dp)
-                            .clip(MaterialTheme.shapes.medium)
+                        //.clip(MaterialTheme.shapes.medium)
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
                 }
             }
         }
 
         Column(
-            modifier.padding(vertical = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         ) {
 
             /***Title*/
             article.title?.let { title ->
                 Text(
                     text = title,
-                    style = textStyles.h2Bold,
+                    style = textStyles.articleTitle,
                     maxLines = 4,
                     overflow = TextOverflow.Ellipsis
                 )
             }
+            Spacer(modifier = Modifier.height(20.dp))
 
-
+            /**Author*/
             Row(
-                modifier.padding(bottom = 20.dp)
+                modifier = Modifier.padding(bottom = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text("By Andy Corlbey")
-                Text("1m ago")
+                article.author?.let {
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = it,
+                        style = textStyles.h3Medium,
+                        color = Color.Gray,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                article.publishedAt?.let {
+                    Text(
+                        text = formatTimeDifference(publishedDate = it, currentDate = Date()),
+                        style = textStyles.h3Medium,
+                        color = Color.Gray,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+
             }
 
             /**Контент*/
-
             article.content?.let { content ->
-                Text(content)
+                Text(
+                    text = content,
+                    style = textStyles.actionSheet,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
     }

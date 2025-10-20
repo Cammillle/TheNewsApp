@@ -1,7 +1,6 @@
-package com.example.news.main
+package com.example.news.main.utils
 
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -15,64 +14,64 @@ class AppTextStyles @Inject constructor(
     // Article Title SF Pro Bold 18
     val articleTitle = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Companion.Bold,
         fontSize = 18.sp
     )
 
     // Action Sheet SF Pro Regular 18
     val actionSheet = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Companion.Normal,
         fontSize = 18.sp
     )
 
     // Image Caption SF Pro Regular Italic 12
     val imageCaption = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontStyle = FontStyle.Italic,
+        fontWeight = FontWeight.Companion.Normal,
+        fontStyle = FontStyle.Companion.Italic,
         fontSize = 12.sp
     )
 
     // H1 SF Pro Bold 15
     val h1Bold = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Companion.Bold,
         fontSize = 15.sp
     )
 
     // H1 SF Pro Medium 15
     val h1Medium = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Companion.Medium,
         fontSize = 15.sp
     )
 
     // H2 SF Pro Medium 14
     val h2Bold = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Companion.Bold,
         fontSize = 14.sp
     )
 
     // H3 SF Pro Bold 13
     val h3Bold = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Companion.Bold,
         fontSize = 13.sp
     )
 
     // H3 SF Pro Medium 13
     val h3Medium = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Companion.Medium,
         fontSize = 13.sp
     )
 
     // P1 SF Pro Regular 15
     val p1Regular = TextStyle(
         fontFamily = sfProFontFamily,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Companion.Normal,
         fontSize = 15.sp
     )
 }
