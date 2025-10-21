@@ -121,6 +121,9 @@ fun NewsMainScreen(
                     textStyles = textStyles,
                     onArticleClickListener = { articleUI ->
                         navigationState.navigateToArticlePost(articleUI)
+                    },
+                    onCategoryChange = { title ->
+                        viewModel.changeCategory(title)
                     }
                 )
             },
@@ -142,7 +145,8 @@ internal fun NewsMainScreenInternal(
     viewModel: NewsMainViewModel,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
-    onArticleClickListener: (ArticleUI) -> Unit
+    onArticleClickListener: (ArticleUI) -> Unit,
+    onCategoryChange: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
     val currentState = state
@@ -150,7 +154,8 @@ internal fun NewsMainScreenInternal(
         currentState,
         modifier,
         textStyles,
-        onArticleClickListener = onArticleClickListener
+        onArticleClickListener = onArticleClickListener,
+        onCategoryChange = onCategoryChange
     )
 }
 
@@ -159,21 +164,24 @@ private fun NewsMainContent(
     currentState: State,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
-    onArticleClickListener: (ArticleUI) -> Unit
+    onArticleClickListener: (ArticleUI) -> Unit,
+    onCategoryChange: (String) -> Unit
 ) {
     Column(modifier) {
         when (currentState) {
             is State.Success -> ArticleList(
-                currentState,
+                articleState = currentState,
                 textStyles = textStyles,
-                onArticleClickListener = onArticleClickListener
+                onArticleClickListener = onArticleClickListener,
+                onCategoryChange = onCategoryChange
             )
 
             is State.Error -> ErrorMessage(currentState)
             is State.Loading -> ProgressIndicator(
                 currentState,
                 textStyles = textStyles,
-                onArticleClickListener = onArticleClickListener
+                onArticleClickListener = onArticleClickListener,
+                onCategoryChange = onCategoryChange
             )
 
             State.None -> Unit
@@ -202,7 +210,8 @@ private fun ProgressIndicator(
     state: State.Loading,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
-    onArticleClickListener: (ArticleUI) -> Unit
+    onArticleClickListener: (ArticleUI) -> Unit,
+    onCategoryChange: (String) -> Unit
 ) {
     Column {
         Box(
@@ -219,7 +228,8 @@ private fun ProgressIndicator(
                 articles,
                 modifier,
                 textStyles,
-                onArticleClickListener = onArticleClickListener
+                onArticleClickListener = onArticleClickListener,
+                onCategoryChange = onCategoryChange
             )
         }
     }

@@ -48,13 +48,15 @@ internal fun ArticleList(
     articleState: State.Success,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
-    onArticleClickListener: (ArticleUI) -> Unit
+    onArticleClickListener: (ArticleUI) -> Unit,
+    onCategoryChange: (String) -> Unit
 ) {
     ArticleList(
         articles = articleState.articles,
         modifier = modifier,
-        textStyles,
-        onArticleClickListener = onArticleClickListener
+        textStyles = textStyles,
+        onArticleClickListener = onArticleClickListener,
+        onCategoryChange = onCategoryChange
     )
 }
 
@@ -64,10 +66,14 @@ internal fun ArticleList(
     articles: List<ArticleUI>,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
-    onArticleClickListener: (ArticleUI) -> Unit
+    onArticleClickListener: (ArticleUI) -> Unit,
+    onCategoryChange: (String) -> Unit
 ) {
     Column(modifier.padding(top = 10.dp)) {
-        ChipsMenu()
+        ChipsMenu(
+            textStyles,
+            onCategoryChange = onCategoryChange
+        )
     }
 
     LazyColumn(modifier.padding(top = 10.dp)) {

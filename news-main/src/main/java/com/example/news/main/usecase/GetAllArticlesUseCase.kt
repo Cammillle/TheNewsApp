@@ -1,8 +1,9 @@
-package com.example.news.main
+package com.example.news.main.usecase
 
 import com.example.news.data.ArticlesRepository
 import com.example.news.data.RequestResult
 import com.example.news.data.map
+import com.example.news.main.ArticleUI
 import com.example.news.main.utils.toUiArticle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -23,4 +24,3 @@ class GetAllArticlesUseCase @Inject constructor(
             }
     }
 }
-
