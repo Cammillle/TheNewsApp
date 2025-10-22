@@ -1,6 +1,8 @@
 package com.example.news.main.ui.articleList
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Divider
@@ -29,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -38,6 +42,7 @@ import coil.compose.AsyncImagePainter
 import com.example.news.data.models.Source
 import com.example.news.main.utils.AppTextStyles
 import com.example.news.main.ArticleUI
+import com.example.news.main.R
 import com.example.news.main.State
 import com.example.news.main.utils.formatTimeDifference
 import java.util.Date
@@ -91,55 +96,81 @@ internal fun Article(
     Row(
         modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        article.imageUrl?.let { imageUrl ->
-            var isImageVisible by remember { mutableStateOf(true) }
-            if (isImageVisible) {
-                AsyncImage(
-                    model = imageUrl,
-                    onState = { state: AsyncImagePainter.State ->
-                        if (state is AsyncImagePainter.State.Error) {
-                            isImageVisible = false
-                        }
-                    },
-                    contentDescription = "Article Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(MaterialTheme.shapes.medium)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
+        /**Изображение*/
+        if (article.imageUrl == null || article.imageUrl == "") {
+            Image(
+                painter = painterResource(R.drawable.author_pic),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(140.dp)
+                    .clip(MaterialTheme.shapes.medium)
+            )
+        } else {
+            article.imageUrl.let { imageUrl ->
+                var isImageVisible by remember { mutableStateOf(true) }
+                if (isImageVisible) {
+                    AsyncImage(
+                        model = imageUrl,
+                        onState = { state: AsyncImagePainter.State ->
+                            if (state is AsyncImagePainter.State.Error) {
+                                isImageVisible = false
+                            }
+                        },
+                        contentDescription = "Article Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(140.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(R.drawable.author_pic),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(140.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                    )
+                }
             }
         }
-        /***Блок с контентом*/
-        Column(
+
+        Spacer(modifier = Modifier.width(12.dp))
+
+        /***Блок с контентом СПРАВА*/
+        Box(
             modifier = Modifier
                 .weight(1f)
-                .height(100.dp)
-                .padding(vertical = 4.dp)
+                .height(140.dp)
         ) {
-            article.title?.let { title ->
-                Text(
-                    text = title,
-                    style = textStyles.h2Bold,
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis
-                )
+            // Основной контент
+            Column {
+                article.title?.let { title ->
+                    Text(
+                        text = title,
+                        style = textStyles.h2Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                article.author?.let { author ->
+                    Text(
+                        text = "By $author",
+                        color = Color.Gray,
+                        style = textStyles.h3Medium,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            article.author?.let { author ->
-                Text(
-                    text = "By $author",
-                    color = Color.Gray,
-                    style = textStyles.h3Medium,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
 
             /**Метаданные**/
             Row(
+                modifier = Modifier.align(Alignment.BottomStart),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
@@ -171,17 +202,15 @@ internal fun Article(
                         )
                     }
                 }
-                Row(horizontalArrangement = Arrangement.End) {
-                    IconButton(
-                        onClick = { onArticleClickListener() },
-                        modifier = Modifier.padding(start = 16.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.MoreHoriz,
-                            contentDescription = "More options",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+
+                IconButton(
+                    onClick = { onArticleClickListener() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.MoreHoriz,
+                        contentDescription = "More options",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
             }
         }
@@ -192,7 +221,6 @@ internal fun Article(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .padding(bottom = 8.dp)
     )
 }
 

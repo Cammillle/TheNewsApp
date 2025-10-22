@@ -40,7 +40,7 @@ class ArticlesRepository @Inject constructor(
 
     private fun getAllFromServer(query: String): Flow<RequestResult<List<Article>>> {
         val apiRequest = flow {
-            emit(api.getEverything(query)) //Result<ResponseDTO<ArticleDTO>>
+            emit(api.getEverything(query = query)) //Result<ResponseDTO<ArticleDTO>>
         }.onEach { result ->
             // Если запрос прошел успешно, сохраняем данные в локальный кэш (БД)
             if (result.isSuccess) {

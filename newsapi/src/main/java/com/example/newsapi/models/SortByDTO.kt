@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class SortByDTO {
     @SerializedName("relevancy")
-    RELEVANCY,
+    relevancy,
 
     @SerializedName("popularity")
-    POPULARITY,
+    popularity,
 
     @SerializedName("publishedAt")
-    PUBLISHED_AT
+    publishedAt
 
 }

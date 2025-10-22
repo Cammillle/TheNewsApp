@@ -22,7 +22,7 @@ interface NewsApi {
         @Query("from") from: Date? = null,
         @Query("to") to: Date? = null,
         @Query("language") languages: List<@JvmSuppressWildcards LanguageDTO>? = null,
-        @Query("sortBy") sortBy: SortByDTO? = null,
+        @Query("sortBy") sortBy: SortByDTO = SortByDTO.popularity,
         @Query("pageSize") pageSize: Int = 100,
         @Query("page") page: Int = 1
     ): Result<ResponseDTO<ArticleDTO>>
