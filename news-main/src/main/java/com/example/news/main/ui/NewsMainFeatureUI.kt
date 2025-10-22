@@ -35,6 +35,7 @@ import com.example.news.main.State
 import com.example.news.main.navigation.AppNavGraph
 import com.example.news.main.navigation.rememberNavigationState
 import com.example.news.main.ui.articleList.ArticleList
+import com.example.news.main.ui.articleList.ChipsMenu
 import com.example.news.main.ui.articlePost.ArticlePostContent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -167,13 +168,16 @@ private fun NewsMainContent(
     onArticleClickListener: (ArticleUI) -> Unit,
     onCategoryChange: (String) -> Unit
 ) {
-    Column(modifier) {
+    Column(modifier.padding(top = 10.dp)) {
+        ChipsMenu(
+            textStyles = textStyles,
+            onCategoryChange = onCategoryChange
+        )
         when (currentState) {
             is State.Success -> ArticleList(
                 articleState = currentState,
                 textStyles = textStyles,
                 onArticleClickListener = onArticleClickListener,
-                onCategoryChange = onCategoryChange
             )
 
             is State.Error -> ErrorMessage(currentState)
@@ -181,7 +185,6 @@ private fun NewsMainContent(
                 currentState,
                 textStyles = textStyles,
                 onArticleClickListener = onArticleClickListener,
-                onCategoryChange = onCategoryChange
             )
 
             State.None -> Unit
@@ -210,14 +213,13 @@ private fun ProgressIndicator(
     state: State.Loading,
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
-    onArticleClickListener: (ArticleUI) -> Unit,
-    onCategoryChange: (String) -> Unit
+    onArticleClickListener: (ArticleUI) -> Unit
 ) {
-    Column {
+    Column(modifier.padding(top = 10.dp)) {
         Box(
             modifier
-                .fillMaxSize()
-                .padding(10.dp),
+                .fillMaxSize(),
+                //.padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
@@ -229,7 +231,6 @@ private fun ProgressIndicator(
                 modifier,
                 textStyles,
                 onArticleClickListener = onArticleClickListener,
-                onCategoryChange = onCategoryChange
             )
         }
     }

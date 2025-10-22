@@ -49,14 +49,12 @@ internal fun ArticleList(
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
     onArticleClickListener: (ArticleUI) -> Unit,
-    onCategoryChange: (String) -> Unit
 ) {
     ArticleList(
         articles = articleState.articles,
         modifier = modifier,
         textStyles = textStyles,
         onArticleClickListener = onArticleClickListener,
-        onCategoryChange = onCategoryChange
     )
 }
 
@@ -67,14 +65,7 @@ internal fun ArticleList(
     modifier: Modifier = Modifier,
     textStyles: AppTextStyles,
     onArticleClickListener: (ArticleUI) -> Unit,
-    onCategoryChange: (String) -> Unit
 ) {
-    Column(modifier.padding(top = 10.dp)) {
-        ChipsMenu(
-            textStyles,
-            onCategoryChange = onCategoryChange
-        )
-    }
 
     LazyColumn(modifier.padding(top = 10.dp)) {
         items(articles) { article ->
