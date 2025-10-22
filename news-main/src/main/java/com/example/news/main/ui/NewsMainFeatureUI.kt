@@ -48,30 +48,35 @@ fun NewsMainScreen(
     val navigationState = rememberNavigationState()
     val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    Scaffold(
 
+    Scaffold(
         /***AppBar*/
         topBar = {
-            CenterAlignedTopAppBar(
-                actions = {
-                },
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            modifier = Modifier.padding(end = 6.dp),
-                            painter = painterResource(R.drawable.newslogo_1),
-                            contentDescription = null
-                        )
-                        Text(
-                            color = Color.Black,
-                            style = textStyles.h1Bold,
-                            text = "News 24"
-                        )
+            val isArticlePostScreen =
+                currentDestination?.route?.contains("article_post") == true
+
+            if (!isArticlePostScreen) {
+                CenterAlignedTopAppBar(
+                    actions = {
+                    },
+                    title = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier.padding(end = 6.dp),
+                                painter = painterResource(R.drawable.newslogo_1),
+                                contentDescription = null
+                            )
+                            Text(
+                                color = Color.Black,
+                                style = textStyles.h1Bold,
+                                text = "News 24"
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         },
 
         /**BottomBar*/
@@ -130,7 +135,10 @@ fun NewsMainScreen(
             },
             articlePostContent = { article ->
                 ArticlePostContent(
-                    article,
+                    article = article,
+                    onBackPressed = {
+                        navigationState.navHostController.popBackStack()
+                    },
                     textStyles = textStyles,
                     modifier = Modifier.padding(paddingValues)
                 )
@@ -219,7 +227,7 @@ private fun ProgressIndicator(
         Box(
             modifier
                 .fillMaxSize(),
-                //.padding(10.dp),
+            //.padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
