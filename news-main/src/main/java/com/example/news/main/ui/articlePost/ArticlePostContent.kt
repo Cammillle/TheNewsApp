@@ -67,7 +67,8 @@ fun ArticlePostContent(
                                 Icon(
                                     modifier = Modifier.size(24.dp),
                                     painter = painterResource(R.drawable.outline_bookmark_24),
-                                    contentDescription = null
+                                    contentDescription = null,
+                                    tint = Color.Black
                                 )
                             }
                             IconButton(
@@ -77,7 +78,8 @@ fun ArticlePostContent(
                                 Icon(
                                     modifier = Modifier.size(24.dp),
                                     painter = painterResource(R.drawable.outline_ios_share_24),
-                                    contentDescription = null
+                                    contentDescription = null,
+                                    tint = Color.Black
                                 )
                             }
                         }
@@ -101,7 +103,7 @@ fun ArticlePostContent(
     ) { paddingValues ->
         /**Scrollable Column*/
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
